@@ -1,0 +1,6 @@
+version: "3"
+services:
+  studentApp:
+    image: sjagadi/student-app
+    ports:
+      - "8085:8080"
