@@ -18,7 +18,7 @@ public class Util {
         return Integer.parseInt(studentId);
     }
 
-    public static List<String> JSONArrayToList(JSONArray array) {
+    public static List<String> convertJSONArrayToList(JSONArray array) {
         List<String> list = new ArrayList<>();
         for(int i = 0; i < array.length(); i++) {
             list.add(array.get(i).toString());

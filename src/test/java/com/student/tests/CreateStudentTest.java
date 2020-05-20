@@ -20,7 +20,7 @@ public class CreateStudentTest extends AbstractStudentApi {
                 .body("lastName", equalTo(lastName))
                 .body("programme", equalTo(programme))
                 .body("email", equalTo(email))
-                .body("courses", equalTo(Util.JSONArrayToList(courses)));
+                .body("courses", equalTo(Util.convertJSONArrayToList(courses)));
     }
 
     @Feature("System rejects same student detail twice")
