@@ -5,6 +5,8 @@ import com.student.utils.BaseTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class StudentsRestAPI implements BaseTest {
     public Response getAllStudents() {
@@ -52,6 +54,31 @@ public class StudentsRestAPI implements BaseTest {
 
         static String postStudentApiUrl() {
             return "/student";
+        }
+    }
+
+    public static class StudentPayloadConstructor {
+        String firstName;
+        String lastName;
+        String email;
+        String programme;
+        JSONArray courses;
+
+        public StudentPayloadConstructor(String firstName, String lastName, String email, String programme, JSONArray courses) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+            this.programme = programme;
+            this.courses = courses;
+        }
+
+        public JSONObject build() {
+            return new JSONObject()
+                    .put("firstName", firstName)
+                    .put("lastName", lastName)
+                    .put("email", email)
+                    .put("programme", programme)
+                    .put("courses", courses);
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.student.tests;
 
+import com.student.requests.StudentsRestAPI;
 import com.student.utils.BaseTest;
-import com.student.utils.Payloads;
 import io.restassured.response.Response;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
-import java.util.ArrayList;
-import java.util.List;
 import static org.hamcrest.Matchers.equalTo;
 
 public abstract class AbstractStudentApi implements BaseTest {
@@ -14,7 +13,7 @@ public abstract class AbstractStudentApi implements BaseTest {
     static String lastName;
     static String email;
     static String programme;
-    static List<String> courses;
+    static JSONArray courses;
     static JSONObject payload;
     static Response response;
 
@@ -24,11 +23,11 @@ public abstract class AbstractStudentApi implements BaseTest {
         lastName = faker.name().lastName();
         email = faker.internet().emailAddress();
         programme = "Financial Analysis";
-        courses = new ArrayList<>();
-        courses.add("Java");
-        courses.add("Python");
-        courses.add("C++");
-        payload = Payloads.createStudentPayload(firstName, lastName, email, programme, courses);
+        courses = new JSONArray()
+                .put("Java")
+                .put("Python")
+                .put("C++");
+        payload = new StudentsRestAPI.StudentPayloadConstructor(firstName, lastName, email, programme, courses).build();
         response = student.studentAPI().createStudent(payload.toString());
         response.then().statusCode(201)
                 .body("msg", equalTo("Student added"));

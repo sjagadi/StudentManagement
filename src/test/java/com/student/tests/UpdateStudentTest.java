@@ -1,13 +1,12 @@
 package com.student.tests;
 
-import com.student.utils.Payloads;
+import com.student.requests.StudentsRestAPI;
 import com.student.utils.Util;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-
 import static org.hamcrest.Matchers.equalTo;
 
 @Epic("Student Management")
@@ -19,11 +18,9 @@ public class UpdateStudentTest extends AbstractStudentApi {
         firstName = faker.name().firstName();
         lastName = faker.name().lastName();
         programme = "Financial Analysis";
-        courses = new ArrayList<>();
-        courses.add("Java");
-        courses.add("Python");
-        courses.add("C++");
-        payload = Payloads.createStudentPayload(firstName, lastName, email, programme, courses);
+        courses = new JSONArray().put("Java")
+                .put("Python").put("C++");
+        payload = new StudentsRestAPI.StudentPayloadConstructor(firstName, lastName, email, programme, courses).build();
         student.studentAPI()
                 .updateStudent(payload.toString(), Util.getStudentId(response, email))
                 .then().statusCode(200)

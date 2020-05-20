@@ -1,6 +1,6 @@
 package com.student.tests;
 
-import com.student.utils.Payloads;
+import com.student.requests.StudentsRestAPI;
 import com.student.utils.Util;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -20,13 +20,13 @@ public class CreateStudentTest extends AbstractStudentApi {
                 .body("lastName", equalTo(lastName))
                 .body("programme", equalTo(programme))
                 .body("email", equalTo(email))
-                .body("courses", equalTo(courses));
+                .body("courses", equalTo(Util.JSONArrayToList(courses)));
     }
 
     @Feature("System rejects same student detail twice")
     @Test
     public void Test005_SystemRejectsAlreadyExistingStudent() {
-        payload = Payloads.createStudentPayload(firstName, lastName, email, programme, courses);
+        payload = new StudentsRestAPI.StudentPayloadConstructor(firstName, lastName, email, programme, courses).build();
         response = student.studentAPI().createStudent(payload.toString());
         response.then().statusCode(500)
                 .body("error", equalTo("Email address already exists"));
