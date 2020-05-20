@@ -4,32 +4,34 @@ import com.student.utils.BaseTest;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.util.concurrent.TimeUnit;
 import static org.hamcrest.Matchers.lessThan;
 
 public class SpecificationFactory implements BaseTest {
-    public static synchronized ResponseSpecification getGenericResponseSpec() {
-        ResponseSpecBuilder responseSpecBuilder;
-        ResponseSpecification responseSpecification;
-        responseSpecBuilder = new ResponseSpecBuilder();
-        responseSpecBuilder.expectHeader("Content-Type", "application/json;charset=UTF-8");
-        responseSpecBuilder.expectHeader("Transfer-Encoding", "chunked");
-        responseSpecBuilder.expectResponseTime(lessThan(5L), TimeUnit.SECONDS);
-        responseSpecification = responseSpecBuilder.build();
-        return responseSpecification;
+    public static synchronized ResponseSpecification responseSpec() {
+        return new ResponseSpecBuilder()
+                .expectHeader("Content-Type", "application/json;charset=UTF-8")
+                .expectHeader("Transfer-Encoding", "chunked")
+                .expectResponseTime(lessThan(5L), TimeUnit.SECONDS)
+                .build();
     }
 
-    //Log request response details in the allure report
-    public static synchronized RequestSpecification logPayloadResponseInfo() {
-        RequestSpecBuilder logBuilder;
-        RequestSpecification logSpecification;
-        logBuilder = new RequestSpecBuilder();
-        if(prop.getProperty("log").equalsIgnoreCase("ENABLE")){
-            logBuilder.addFilter(new AllureRestAssured());
+    public static RequestSpecification requestSpec() {
+        RequestSpecBuilder requestSpec = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .setBaseUri(prop.getProperty("baseUrl"))
+                .setPort(Integer.parseInt(prop.getProperty("port")))
+                .addFilter(new AllureRestAssured());
+
+        if(prop.getProperty("log").equalsIgnoreCase("enable")) {
+            requestSpec.addFilter(new RequestLoggingFilter())
+                    .addFilter(new ResponseLoggingFilter());
         }
-        logSpecification = logBuilder.build();
-        return logSpecification;
+        return requestSpec.build();
     }
 }

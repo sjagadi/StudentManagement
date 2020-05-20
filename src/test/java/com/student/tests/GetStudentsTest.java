@@ -5,7 +5,6 @@ import com.student.utils.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -27,7 +26,7 @@ public class GetStudentsTest implements BaseTest {
     public void Test002_GetStudentById() {
         student.studentAPI()
                 .getStudent(1).then()
-                .spec(SpecificationFactory.getGenericResponseSpec())
+                .spec(SpecificationFactory.responseSpec())
                 .statusCode(200);
     }
 
@@ -36,7 +35,7 @@ public class GetStudentsTest implements BaseTest {
     public void Test003_GetStudentWithWrongId() {
         student.studentAPI().getStudent(1000)
                 .then()
-                .spec(SpecificationFactory.getGenericResponseSpec())
+                .spec(SpecificationFactory.responseSpec())
                 .statusCode(404)
                 .body("error", equalTo("Not Found!"));
     }

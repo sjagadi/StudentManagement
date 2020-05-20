@@ -1,45 +1,41 @@
 package com.student.requests;
 
 import com.student.specs.SpecificationFactory;
-import com.student.utils.BaseTest;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class StudentsRestAPI implements BaseTest {
+public class StudentsRestAPI  {
     public Response getAllStudents() {
         return RestAssured.given()
-                .spec(SpecificationFactory.logPayloadResponseInfo())
+                .spec(SpecificationFactory.requestSpec())
                 .get(StudentApiUrl.getStudentApiUrl());
     }
 
     public Response getStudent(int studentId) {
         return RestAssured.given()
-                .spec(SpecificationFactory.logPayloadResponseInfo())
+                .spec(SpecificationFactory.requestSpec())
                 .get(StudentApiUrl.getSpecificStudentApiUrl(studentId));
     }
 
     public Response createStudent(String payload) {
         return RestAssured.given()
-                .contentType(ContentType.JSON)
-                .spec(SpecificationFactory.logPayloadResponseInfo())
+                .spec(SpecificationFactory.requestSpec())
                 .body(payload)
                 .post(StudentApiUrl.postStudentApiUrl());
     }
 
     public Response updateStudent(String payload, int studentId) {
         return RestAssured.given()
-                .contentType(ContentType.JSON)
-                .spec(SpecificationFactory.logPayloadResponseInfo())
+                .spec(SpecificationFactory.requestSpec())
                 .body(payload)
                 .put(StudentApiUrl.getSpecificStudentApiUrl(studentId));
     }
 
     public Response deleteStudent(int studentId) {
         return RestAssured.given()
-                .spec(SpecificationFactory.logPayloadResponseInfo())
+                .spec(SpecificationFactory.requestSpec())
                 .delete(StudentApiUrl.getSpecificStudentApiUrl(studentId));
     }
 

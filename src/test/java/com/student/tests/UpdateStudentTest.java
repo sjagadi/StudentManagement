@@ -18,8 +18,10 @@ public class UpdateStudentTest extends AbstractStudentApi {
         firstName = faker.name().firstName();
         lastName = faker.name().lastName();
         programme = "Financial Analysis";
-        courses = new JSONArray().put("Java")
-                .put("Python").put("C++");
+        courses = new JSONArray()
+                .put("Java")
+                .put("Python")
+                .put("C++");
         payload = new StudentsRestAPI.StudentPayloadConstructor(firstName, lastName, email, programme, courses).build();
         student.studentAPI()
                 .updateStudent(payload.toString(), Util.getStudentId(response, email))
