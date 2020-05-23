@@ -1,42 +1,32 @@
 package com.student.requests;
 
-import com.student.specs.SpecificationFactory;
-import io.restassured.RestAssured;
+import com.student.client.CommonAPI;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class StudentsRestAPI  {
+public class StudentsRestAPI extends CommonAPI {
     public Response getAllStudents() {
-        return RestAssured.given()
-                .spec(SpecificationFactory.requestSpec())
-                .get(StudentApiUrl.getStudentApiUrl());
+        return getSpecification().get(StudentApiUrl.getStudentApiUrl());
     }
 
     public Response getStudent(int studentId) {
-        return RestAssured.given()
-                .spec(SpecificationFactory.requestSpec())
-                .get(StudentApiUrl.getSpecificStudentApiUrl(studentId));
+        return getSpecification().get(StudentApiUrl.getStudentByIdApiUrl(studentId));
     }
 
     public Response createStudent(String payload) {
-        return RestAssured.given()
-                .spec(SpecificationFactory.requestSpec())
-                .body(payload)
+        return getSpecification().body(payload)
                 .post(StudentApiUrl.postStudentApiUrl());
     }
 
     public Response updateStudent(String payload, int studentId) {
-        return RestAssured.given()
-                .spec(SpecificationFactory.requestSpec())
-                .body(payload)
-                .put(StudentApiUrl.getSpecificStudentApiUrl(studentId));
+        return getSpecification().body(payload)
+                .put(StudentApiUrl.getStudentByIdApiUrl(studentId));
     }
 
     public Response deleteStudent(int studentId) {
-        return RestAssured.given()
-                .spec(SpecificationFactory.requestSpec())
-                .delete(StudentApiUrl.getSpecificStudentApiUrl(studentId));
+        return getSpecification()
+                .delete(StudentApiUrl.getStudentByIdApiUrl(studentId));
     }
 
     private static class StudentApiUrl {
@@ -44,7 +34,7 @@ public class StudentsRestAPI  {
             return "/student/list";
         }
 
-        static String getSpecificStudentApiUrl(int studentId) {
+        static String getStudentByIdApiUrl(int studentId) {
             return "/student/" + studentId;
         }
 
