@@ -27,5 +27,13 @@ public class UpdateStudentTest extends AbstractStudentApi {
                 .updateStudent(payload.toString(), Util.getStudentId(response, email))
                 .then().statusCode(200)
                 .body("msg", equalTo("Student Updated"));
+
+        response = student.studentAPI().getStudent(Util.getStudentId(response, email));
+        response.then().statusCode(200)
+                .body("firstName", equalTo(firstName))
+                .body("lastName", equalTo(lastName))
+                .body("programme", equalTo(programme))
+                .body("email", equalTo(email))
+                .body("courses", equalTo(Util.convertJSONArrayToList(courses)));
     }
 }

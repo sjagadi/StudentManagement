@@ -17,8 +17,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.lessThan;
 
 public abstract class CommonAPI implements BaseTest {
-    public static final String DEFAULT_USER_NAME = "admin";
-    public static final String DEFAULT_USER_PASSWORD = "admin";
+    public static final String DEFAULT_USER_NAME = prop.getProperty("username");
+    public static final String DEFAULT_USER_PASSWORD = prop.getProperty("password");
     static RequestSpecBuilder requestSpec;
 
     public static RequestSpecification requestSpec() {
@@ -56,7 +56,7 @@ public abstract class CommonAPI implements BaseTest {
                 .build();
     }
 
-    public RequestSpecification getSpecification() {
+    public static RequestSpecification getSpecification() {
         return given().spec(requestSpec());
     }
 }

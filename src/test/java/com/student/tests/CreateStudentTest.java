@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class CreateStudentTest extends AbstractStudentApi {
     @Feature("Verify the details of newly added student")
     @Test
-    public void Test004_VerifyNewStudentCreated() {
+    public void Test004_VerifyNewlyCreatedStudentDetails() {
         response = student.studentAPI().getStudent(Util.getStudentId(response, email));
         response.then().statusCode(200)
                 .body("firstName", equalTo(firstName))
@@ -23,7 +23,7 @@ public class CreateStudentTest extends AbstractStudentApi {
                 .body("courses", equalTo(Util.convertJSONArrayToList(courses)));
     }
 
-    @Feature("System rejects same student detail twice")
+    @Feature("System rejects creating student with the details twice")
     @Test
     public void Test005_SystemRejectsAlreadyExistingStudent() {
         payload = new StudentsRestAPI.StudentPayloadConstructor(firstName, lastName, email, programme, courses).build();

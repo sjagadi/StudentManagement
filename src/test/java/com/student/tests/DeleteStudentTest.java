@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class DeleteStudentTest extends AbstractStudentApi {
     @Feature("Delete the newly added student")
     @Test
-    public void Test006_DeleteStudent() {
+    public void Test006_SystemDeletesAnyExistingStudent() {
         student.studentAPI()
                 .deleteStudent(Util.getStudentId(response, email))
                 .then().statusCode(204);
